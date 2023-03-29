@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        .correct {color: green}
+        .wrong {color: darkred;}
+        .darkred {background-color: darkred;}
+        .current {color: #fff; background: gray;}
+        span {padding: 2px 1px; line-height: 20px}
+    </style>
+</head>
+<body>
+<pre style="margin: 20px; color: gray; font-size: 1rem" id="source"></pre>
+<script>
+    let code;
+    const userInput = [];
+
+    fetch("https://raw.githubusercontent.com/koraytugay/leet-code/main/src/biz/tugay/leetcode/array/ContainsDuplicate.java")
+        .then(response => response.text())
+        .then(body => {
+            code = body.split("");
+            for (const char of code) {
+                const sourceCodeCharSpan = document.createElement("span");
+                sourceCodeCharSpan.innerText = char;
+                document.getElementById("source").appendChild(sourceCodeCharSpan);
+            }
+            codeCharSpan(1).classList.add("current");
+        });
+
+    document.addEventListener("keydown", e => {
+        if (e.key === "Shift") return;
+        if (e.key === " ") e.preventDefault();
+        if (e.key === "Backspace") {
+            codeCharSpan(userInput.length).classList.remove("correct", "wrong", "darkred");
+            userInput.pop();
+        }
+        if (e.key === "Enter") {
+            // userInput.push("\n");
+            while ([" ", "\n"].includes(code[userInput.length]))
+                userInput.push(code[userInput.length]);
+        } else if (e.key !== "Backspace" && e.key !== "Meta")
+            userInput.push(e.key);
+
+        let current = codeCharSpan(userInput.length);
+        if (current.textContent === userInput[userInput.length - 1])
+            current.classList.add("correct");
+        else {
+            if (current.innerText === " ") current.classList.add("darkred");
+            if (current.innerText !== "\n") current.classList.add("wrong");
+        }
+
+        applyCurrent();
+    });
+
+    function applyCurrent() {
+        for (const element of document.getElementsByClassName("current"))
+            element.classList.remove("current");
+        codeCharSpan(userInput.length + 1).classList.add("current");
+    }
+
+    const codeCharSpan = (i) => document.querySelector(`#source > span:nth-child(${i})`);
+</script>
+</body>
+</html>
