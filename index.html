@@ -5,11 +5,9 @@
         .current {color: #fff; background: gray;} span {padding: 2px 1px; line-height: 20px;}
     </style>
 </head>
-<body><pre style="margin: 0 0 0 20px; color: gray; font-size: 1rem" id="source"></pre></body>
+<body><pre id="source" style="margin-left: 20px; color: gray; font-size: 1rem"></pre></body>
 <script>
-    const spanAt = (i) => document.querySelector(`#source > span:nth-child(${i})`);
-    let code;
-    const userInput = [];
+    let spanAt = (i) => document.querySelector(`#source > span:nth-child(${i})`), code = "", userInput = [];
     fetch("https://raw.githubusercontent.com/koraytugay/code-this-page/main/index.html").then(resp => resp.text())
         .then(body => {
             code = body.split("");
@@ -21,7 +19,6 @@
             spanAt(1).classList.add("current");});
 
     document.addEventListener("keydown", e => {
-        if (e.key === "Shift") return;
         if (e.key === " ") e.preventDefault();
         if (e.key === "Backspace") {
             spanAt(userInput.length).className = "";
@@ -30,20 +27,15 @@
         if (e.key === "Enter")
             while ([" ", "\n"].includes(code[userInput.length]))
                 userInput.push(code[userInput.length]);
-        if (e.key !== "Enter" && e.key !== "Backspace" && e.key !== "Meta")
-            userInput.push(e.key);
+        if (!["Shift", "Enter", "Backspace", "Meta"].includes(e.key)) userInput.push(e.key);
 
         let current = spanAt(userInput.length);
         if (current.textContent === userInput[userInput.length - 1]) current.classList.add("correct");
         else if (current.innerText === " ") current.classList.add("darkred");
         else if (current.innerText !== "\n") current.classList.add("wrong");
 
-        applyCurrent();
-    });
-
-    function applyCurrent() {
         for (const element of document.getElementsByClassName("current")) element.classList.remove("current");
         spanAt(userInput.length + 1).classList.add("current");
-    }
+    });
 </script>
 </html>
