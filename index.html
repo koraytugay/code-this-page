@@ -19,6 +19,7 @@
             spanAt(1).classList.add("current");});
 
     document.addEventListener("keydown", e => {
+        if (e.key === "Shift") return;
         if (e.key === " ") e.preventDefault();
         if (e.key === "Backspace") {
             spanAt(userInput.length).className = "";
@@ -27,7 +28,7 @@
         if (e.key === "Enter")
             while ([" ", "\n"].includes(code[userInput.length]))
                 userInput.push(code[userInput.length]);
-        if (!["Shift", "Enter", "Backspace", "Meta"].includes(e.key)) userInput.push(e.key);
+        if (!["Enter", "Backspace", "Meta"].includes(e.key)) userInput.push(e.key);
 
         let current = spanAt(userInput.length);
         if (current.textContent === userInput[userInput.length - 1]) current.classList.add("correct");
