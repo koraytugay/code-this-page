@@ -1,8 +1,8 @@
 <html>
 <head>
     <style>
-        .correct {color: green;} .wrong {color: darkred;} .darkred {background-color: darkred;}
-        .current {color: white; background: gray;} span {padding: 2px 1px; line-height: 20px;}
+        .correct {color: green;} .wrong {color: darkred;} .wrongBackGround {background-color: darkred;}
+        .current {color: white; background: gray;} span {padding: 2px 0; line-height: 20px;}
     </style>
 </head>
 <body><pre id="source" style="margin-left: 20px; color: gray; font-size: 1rem"></pre></body>
@@ -32,7 +32,7 @@
 
         let current = spanAt(userInput.length);
         if (current.textContent === userInput[userInput.length - 1]) current.classList.add("correct");
-        else if (current.innerText === " ") current.classList.add("darkred");
+        else if (current.innerText === " ") current.classList.add("wrongBackGround");
         else if (current.innerText !== "\n") current.classList.add("wrong");
 
         for (const element of document.getElementsByClassName("current")) element.classList.remove("current");
